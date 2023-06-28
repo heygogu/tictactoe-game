@@ -1,11 +1,35 @@
 import './components/styles.scss';
 import Board from './components/board';
+import { useState } from 'react';
+import { calculateWinner } from './winner';
 function App() {
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [isXNext, setIsXNext] = useState(false);
+
+  const winner = calculateWinner(squares);
+  const nextPlayer = isXNext ? 'X' : '0';
+  const statusMessage = winner ? 'Winner is ' + winner : "Next Player is: "+nextPlayer;
+  const handleSquareClick = Clickedposition => {
+    if (squares[Clickedposition] || winner) {
+      return;
+    }
+
+    setSquares(currentSquares => {
+      // currentSquares[0]=1; we can't directly mutate the values, also position in next line have a meaning
+      return currentSquares.map((squareValue, position) => {
+        if (Clickedposition == position) {
+          return isXNext ? 'X' : '0';
+        }
+        return squareValue;
+      });
+    });
+
+    setIsXNext(currentIsXNext => !currentIsXNext);
+  };
   return (
     <div className="app">
-      
-        <Board />
-      
+      <h2>{statusMessage}</h2>
+      <Board squares={squares} handleSquareClick={handleSquareClick} />
     </div>
   );
 }

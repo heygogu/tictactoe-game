@@ -1,30 +1,7 @@
 import { render } from 'react-dom';
 import Square from './square';
-import { useState } from 'react';
-const Board = () => {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [isXNext,setIsXNext]=useState(false);
-  
-  const handleSquareClick = Clickedposition => {
 
-    if(squares[Clickedposition]){
-      return;
-    }
-
-
-    setSquares(currentSquares => {
-      // currentSquares[0]=1; we can't directly mutate the values, also position in next line have a meaning
-      return currentSquares.map((squareValue, position) => {
-        if (Clickedposition == position) {
-          return isXNext ? 'X' : "0";
-        }
-        return squareValue;
-      });
-    });
-
-    setIsXNext(currentIsXNext => !currentIsXNext);
-  };
-
+const Board = ({squares, handleSquareClick}) => {
   const renderSquare = position => {
     return (
       <Square
